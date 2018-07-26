@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#enemy-board, #board {
+    padding: 0px;
+    margin: 50px;
+    border: 2px solid #181818;
+}
+
+#enemy-board tr td, #board tr td {
+    width: 30px;
+    height: 30px;
+    border: black 1px solid
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.active {
+    background-color: orange;
+}
+
+.hidden {
+    display: none;
+}
+
+.missed {
+    background-color: gray;
+}
+
+.target {
+    background-color: gray;
+}
+
+.destroyed{
+    background-color: red;
+}
+
+.info{
+
+}
+
+#name-form, #chat-form, #add-ships{
+    margin: 50px auto;
+}
+
+.div .table{
+    margin: 50px;
+}
