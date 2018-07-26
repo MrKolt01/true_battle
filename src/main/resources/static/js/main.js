@@ -1,5 +1,6 @@
 var stompClient = null;
 var game = null;
+var gameReady = "NOTREADY";
 
 function setConnected(connected) {
     if (connected) {
@@ -14,7 +15,7 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
         setConnected(true);
-        stompClient.subscribe("/topic/game", onGameReceived);
+        stompClient.subscribe("/topic/game", onStartGameReceived);
         stompClient.subscribe("/topic/shot", onShotReceived);
         stompClient.subscribe("/topic/chat", onMessageReceived);
         stompClient.subscribe("/topic/players", onPlayerReceived);
@@ -44,8 +45,9 @@ function onPlayerReceived(player) {
     // alert('Player '+newPlayer.name + ' connected!');
 }
 
-function onGameReceived(game) {
-
+function onStartGameReceived(startGameMessage) {
+    var startGameMessage = JSON.parse(startGameMessage.body);
+    gameReady = startGameMessage.status;
 }
 
 function onMessageReceived(message) {
@@ -92,7 +94,21 @@ function doShot(playerName, target){
 }
 
 function addShip(playerName, target){
+    if (gameReady != "READY") {
+        var addShipMessage = {
+            playerName: playerName,
+            target: target
+        };
+        stompClient.send("/battle/game/add/ships", {}, JSON.stringify(addShipMessage));
+    }
+}
 
+function ready(playerName){
+    var startGameMessage = {
+        playerName: playerName,
+        status: "UNKNOWN"
+    };
+    stompClient.send("/battle/game/ready", {}, JSON.stringify(startGameMessage));
 }
 
 
@@ -109,45 +125,54 @@ $(function () {
         disconnect();
     });
 
+    $("#readyButton").click(function () {
+        var playerName = $("#name").val();
+        ready(playerName);
+    });
+
     $("#send-message").click(function() {
         sendMessage();
     });
 
     $("#board td").click(function () {
-        var minX=0, minY=0;
-        var x = parseInt($(this).index())-1;
-        var y = parseInt($(this).parent().index()-1);
-        var cell = {
-            x: x,
-            y: y,
-            status: "RESERVED"
-        };
+        if (gameReady != "READY") {
+            var minX = 0, minY = 0;
+            var x = parseInt($(this).index()) - 1;
+            var y = parseInt($(this).parent().index() - 1);
+            var cell = {
+                x: x,
+                y: y,
+                status: "RESERVED"
+            };
 
-        var playerName = $("#name").val();
-        var target = {
-            x: x,
-            y: y,
-            status: "PENDING"
-        };
+            var playerName = $("#name").val();
+            var target = {
+                x: x,
+                y: y,
+                status: "PENDING"
+            };
 
-        if ((x >= minX)&&(y >= minY)) {
-            addShip(playerName,target);
-            $(this).toggleClass('active');
+            if ((x >= minX) && (y >= minY)) {
+                addShip(playerName, target);
+                $(this).toggleClass('active');
+            }
         }
     });
 
     $("#enemy-board td").click(function () {
-        var minX=0, minY=0;
-        var x = parseInt($(this).index())-1;
-        var y = parseInt($(this).parent().index()-1);
-        var playerName = $("#name").val();
-        var target = {
-            x: x,
-            y: y,
-            status: "PENDING"
-        };
-        if ((x >= minX)&&(y >= minY)) {
-            doShot(playerName, target);
+        if (gameReady == "READY") {
+            var minX = 0, minY = 0;
+            var x = parseInt($(this).index()) - 1;
+            var y = parseInt($(this).parent().index() - 1);
+            var playerName = $("#name").val();
+            var target = {
+                x: x,
+                y: y,
+                status: "PENDING"
+            };
+            if ((x >= minX) && (y >= minY)) {
+                doShot(playerName, target);
+            }
         }
     });
 });

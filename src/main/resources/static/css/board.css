@@ -5,7 +5,7 @@
 
 #enemy-board, #board {
     padding: 0px;
-    margin: 50px;
+    margin: 10px;
     border: 2px solid #181818;
 }
 
@@ -45,9 +45,9 @@ table {
 }
 
 #name-form, #chat-form, #add-ships{
-    margin: 50px auto;
+    margin: 20px auto;
 }
 
 .div .table{
-    margin: 50px;
+    margin: 10px;
 }

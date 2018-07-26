@@ -14,9 +14,9 @@ public class GameController {
     private final GameService gameService;
 
     @MessageMapping("/game/add/ships")
-    @SendTo("/topic/game")
-    public Game addShips(AddShipMessage addShipsMessage) {
-        return gameService.addShip(addShipsMessage.getPlayerName(), addShipsMessage.getShipPosition());
+    public void addShip(AddShipMessage addShipsMessage) {
+        System.out.println("SHHHHHHHHHHHHIIIPPPPPPPPPPPPPPPPPP");
+        //gameService.addShip(addShipsMessage.getPlayerName(), addShipsMessage.getShipPosition());
     }
 
     @MessageMapping("/game/shot")
@@ -33,5 +33,11 @@ public class GameController {
     public AddPlayerMessage addPlayer(AddPlayerMessage addPlayerMessage) {
         gameService.addPlayer(addPlayerMessage.getName());
         return addPlayerMessage;
+    }
+
+    @MessageMapping("/game/ready")
+    @SendTo("/topic/game")
+    public StartGameMessage startGame(StartGameMessage startGameMessage){
+        return gameService.startGame(startGameMessage);
     }
 }

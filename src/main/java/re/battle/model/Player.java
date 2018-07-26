@@ -11,6 +11,7 @@ public class Player {
     private String name;
     private List<Ship> ships;
     private int maxShipsAmount;
+    private boolean readyStatus;
 
     public boolean isFull(){
         if(ships.size() == maxShipsAmount){
@@ -18,5 +19,9 @@ public class Player {
         } else {
             return false;
         }
+    }
+
+    public boolean getReadyStatus() {
+        return readyStatus;
     }
 }

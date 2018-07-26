@@ -1,7 +1,9 @@
 package re.battle.service;
 
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import re.battle.controller.GameController;
 import re.battle.model.*;
 
 @Service
@@ -11,6 +13,8 @@ public class GameService {
     public Player addPlayer(String playerName){
         Player player = new Player();
         player.setName(playerName);
+        player.setReadyStatus(false);
+        player.setMaxShipsAmount(10);
 
         game.getPlayers().add(player);
 
@@ -64,6 +68,33 @@ public class GameService {
             target.setStatus("MISSED");
         }
         return doShotMessage;
+    }
+
+    public StartGameMessage startGame(StartGameMessage startGameMessage){
+        String playerName = startGameMessage.getPlayerName();
+
+        Player player0 = game.getPlayers().get(0);
+        Player player1 = game.getPlayers().get(1);
+
+        System.out.println(playerName);
+        System.out.println(player0.getName());
+        System.out.println(player1.getName());
+
+        if(playerName.equals(player0.getName())){
+            player0.setReadyStatus(true);
+        }else if(playerName.equals(player1.getName())){
+            player1.setReadyStatus(true);
+        }
+
+        System.out.println(player0.getReadyStatus());
+        System.out.println(player1.getReadyStatus());
+
+        if(player0.getReadyStatus() && player1.getReadyStatus()){
+            startGameMessage.setStatus("READY");
+        } else {
+            startGameMessage.setStatus("NOTREADY");
+        }
+        return startGameMessage;
     }
 
 }

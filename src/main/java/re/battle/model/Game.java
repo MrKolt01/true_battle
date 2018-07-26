@@ -20,6 +20,6 @@ public class Game {
     }
 
     public Game(){
-        this.players = new ArrayList<>(2);
+        this.players =  new ArrayList<>(2);
     }
 }
