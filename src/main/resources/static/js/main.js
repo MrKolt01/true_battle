@@ -2,11 +2,31 @@ var stompClient = null;
 var gameReady = "NOTREADY";
 var playerReady = "NOTREADY";
 
+jQuery('document').ready(function () {
+    var space = 1;
+    for (var i = 0; i <= 10; i++) {
+        var col = "";
+        for (var j = 0; j <= 10; j++) {
+            if (i === 0 && j !== 0) {
+                col += "<td data-pos='" + space + "' align='center'>" + j + "</td>";
+            } else if (j === 0 && i !== 0) {
+                col += "<td data-pos='" + space + "' align='center'>" + i + "</td>";
+            } else {
+                col += "<td data-pos='" + space + "'></td>";
+            }
+            space++;
+        }
+        jQuery('#board').append("<tr>" + col + "</tr>");
+        jQuery('#enemy-board').append("<tr>" + col + "</tr>");
+
+    }
+});
+
 function setConnected(connected) {
     if (connected) {
-        $("#field").show();
+        $("#main").show();
     } else {
-        $("#field").hide();
+        $("#main").hide();
     }
 }
 
@@ -20,12 +40,6 @@ function connect() {
         stompClient.subscribe("/topic/shot", onShotReceived);
         stompClient.subscribe("/topic/chat", onMessageReceived);
         stompClient.subscribe("/topic/players", onPlayerReceived);
-
-        var message = {
-            sender: "Иванов",
-            message: "Это тестовое сообщение при connect()"
-        };
-        stompClient.send("/battle/chat/send", {}, JSON.stringify(message));
 
         var player = {
             name: $("#name").val()
@@ -42,7 +56,7 @@ function disconnect() {
 }
 
 function onPlayerReceived(player) {
-    var newPlayer = JSON.parse(player.body);
+    // var newPlayer = JSON.parse(player.body);
     // alert('Player '+newPlayer.name + ' connected!');
 }
 
@@ -104,7 +118,7 @@ function doShot(playerName, target){
     stompClient.send("/battle/game/shot", {}, JSON.stringify(doShotMessage));
 }
 
-function addShip(playerName, x, y, status){
+function addShip(playerName, x, y){
     if (gameReady !== "READY") {
         var addShipMessage = {
             playerName: playerName,
@@ -136,11 +150,6 @@ $(function () {
 
     $("#disconnect").click(function () {
         disconnect();
-    });
-
-    $("#readyButton").click(function () {
-        var playerName = $("#name").val();
-        ready(playerName);
     });
 
     $("#send-message").click(function() {

@@ -5,64 +5,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.js" charset="utf-8"></script>
-    <script>
-        jQuery('document').ready(function () {
-            var space = 1;
-            for (var i = 0; i <= 10; i++) {
-                var col = "";
-                for (var j = 0; j <= 10; j++) {
-                    if (i === 0 && j !== 0) {
-                        col += "<td data-pos='" + space + "' align='center'>" + j + "</td>";
-                    } else if (j === 0 && i !== 0) {
-                        col += "<td data-pos='" + space + "' align='center'>" + i + "</td>";
-                    } else {
-                        col += "<td data-pos='" + space + "'></td>";
-                    }
-                    space++;
-                }
-                jQuery('#board').append("<tr>" + col + "</tr>");
-            }
-        });
-
-        jQuery('document').ready(function () {
-            var space = 1;
-            for (var i = 0; i <= 10; i++) {
-                var col = "";
-                for (var j = 0; j <= 10; j++) {
-                    if (i === 0 && j !== 0) {
-                        col += "<td data-pos='" + space + "' align='center'>" + j + "</td>";
-                    } else if (j === 0 && i !== 0) {
-                        col += "<td data-pos='" + space + "' align='center'>" + i + "</td>";
-                    } else {
-                        col += "<td data-pos='" + space + "'></td>";
-                    }
-                    space++;
-                }
-                jQuery('#enemy-board').append("<tr>" + col + "</tr>");
-            }
-        });
-    </script>
     <script src="js/main.js"></script>
     <link type="text/css" rel="stylesheet" href="css/board.css"/>
 </head>
 <body>
-<div>
-    <form id="name-form">
-        <input id="name" type="text" placeholder="Type your name"/>
-        <button id="connect" type="submit">Connect</button>
-        <button id="disconnect" type="submit">Disconnect</button>
-    </form>
-</div>
-<div id="field" class="hidden">
-    <table id="board" class="activeField"></table>
-    <table id="enemy-board" class="noActiveField"></table>
-</div>
-<div id="chat-form">
-    <ul id="chat-messages">
+    <div id="header"></div>
+    <div id="main" class="hidden">
+        <table id="board" class="activeField"></table>
+        <table id="enemy-board" class="noActiveField"></table>
+    </div>
+    <div id="sidebar">
+        <form id="name-form">
+            <input id="name" type="text" placeholder="Type your name"/>
+            <button id="connect" type="submit">Connect</button>
+            <button id="disconnect" type="submit">Disconnect</button>
+        </form>
 
-    </ul>
-    <input id="text-message" type="text"/>
-    <button id="send-message" type="submit">Send</button>
-</div>
+        <div id="chat-form">
+            <ul id="chat-messages"></ul>
+            <input id="text-message" type="text"/>
+            <button id="send-message" type="submit">Send</button>
+        </div>
+    </div>
 </body>
-</html>

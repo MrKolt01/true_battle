@@ -1,6 +1,10 @@
-* {
-    margin: 0;
-    padding: 0;
+
+#board{
+
+}
+
+#enemy-board{
+
 }
 
 #enemy-board, #board {
@@ -40,12 +44,11 @@ table {
     background-color: red;
 }
 
-.info{
+#name-form{
 
 }
 
-#name-form, #chat-form, #add-ships{
-    margin: 20px auto;
+#chat-form{
 }
 
 .div .table{
