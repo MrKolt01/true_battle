@@ -3,26 +3,18 @@ body {
     background: #EDEDED url("../images/arches_@2X.png");
 }
 
-#page {
-    margin: 50px 100px;
+.layout {
+    width: 980px;
+    margin: auto;
 }
 
-#main{
+.content{
     opacity: 0.5;
-}
-
-#board{
-
-}
-
-#enemy-board{
-
 }
 
 #enemy-board, #board {
     background: #62B5ED;
     display: inline-table;
-    margin: 10px;
     border: 2px solid #181818;
 }
 
@@ -57,30 +49,31 @@ table {
     background-color: red;
 }
 
-#sidebar{
-    display: inline-block;
+.sidebar div{
+    margin: 10px 0;
 }
 
-#name-form{
-
+.noActiveField {
+    background: #828282 !important;
 }
 
-#chat-form{
+.activeField{
+    background: #62B5ED !important;
 }
 
-#chat-messages{
-    height: 300px;
+.sidebar{
+    width: 180px; /* Ширина колонки */
+    float: right; /* Обтекание слева */
+}
+.content {
+    width: 730px; /* Ширина колонки */
 }
 
-.div .table{
-    margin: 10px;
+.scrollable {
+    width:180px; /* ширина нашего блока */
+    height:220px; /* высота нашего блока */
+    background: #fff; /* цвет фона, белый */
+    border: 1px solid #C1C1C1; /* размер и цвет границы блока */
+    overflow-y: auto;
+    overflow-x: hidden;
 }
-
-#main .noActiveField{
-    background: #828282;
-}
-
-#main .activeField{
-    background: #62B5ED;
-}
-

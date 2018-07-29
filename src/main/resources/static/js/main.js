@@ -1,6 +1,7 @@
 var stompClient = null;
 var gameReady = "NOTREADY";
 var playerReady = "NOTREADY";
+var connectStatus = false;
 
 jQuery('document').ready(function () {
     var space = 1;
@@ -24,9 +25,11 @@ jQuery('document').ready(function () {
 
 function setConnected(connected) {
     if (connected) {
-        $("#main").show();
+        $("#connect").text("Disconnect");
+        connectStatus = true;
     } else {
-        $("#main").hide();
+        $("#connect").text("Connect");
+        connectStatus = false;
     }
 }
 
@@ -79,7 +82,9 @@ function onStartGameReceived(startGameMessage) {
 function onMessageReceived(message) {
     var receivedMessage = JSON.parse(message.body);
 
-    $("#chat-messages").append("<li><b>" + receivedMessage.sender + "</b>: " + receivedMessage.message + "</li>");
+    $("#chat-messages").append("<span class='messageSender'>"+receivedMessage.sender
+        + " :</span></br> "
+        + "<span class='message'>" + receivedMessage.message + "</span></br>");
 }
 
 function onShotReceived(doShotMessage) {
@@ -145,7 +150,11 @@ $(function () {
     });
 
     $("#connect").click(function () {
-        connect();
+        if (connectStatus){
+            disconnect()
+        } else {
+            connect();
+        }
     });
 
     $("#disconnect").click(function () {

@@ -9,24 +9,26 @@
     <link type="text/css" rel="stylesheet" href="css/board.css"/>
 </head>
 <body>
-    <div id="page">
-        <div id="header"></div>
-        <div id="main">
-            <span id="board" class="activeField"></span>
-            <span id="enemy-board" class="noActiveField"></span>
-        </div>
-        <div id="sidebar">
+    <div class="layout">
+        <div class="header"></div>
+
+        <div class="sidebar">
             <div id="name-form">
                 <input id="name" type="text" placeholder="Type your name"/>
-                <button id="connect" type="submit">Connect</button>
-                <button id="disconnect" type="submit">Disconnect</button>
+                <button id="connect" class="connect" type="submit">Connect</button>
             </div>
 
             <div id="chat-form">
-                <span id="chat-messages"></span>
-                <input id="text-message" type="text"/>
+                <div id="chat-messages" class="scrollable"></div>
+                <input id="text-message" placeholder="Type..." type="text"/>
                 <button id="send-message" type="submit">Send</button>
             </div>
         </div>
+
+        <div class="content">
+            <span id="board" class="activeField"></span>
+            <span id="enemy-board" class="noActiveField"></span>
+        </div>
+
     </div>
 </body>
