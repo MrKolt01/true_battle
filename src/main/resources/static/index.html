@@ -51,13 +51,11 @@
         <input id="name" type="text" placeholder="Type your name"/>
         <button id="connect" type="submit">Connect</button>
         <button id="disconnect" type="submit">Disconnect</button>
-        <button id="readyButton" type="submit">Ready!</button>
     </form>
 </div>
 <div id="field" class="hidden">
-    <table id="board"></table>
-    <button id="add-ships" type="submit">Add ships</button>
-    <table id="enemy-board"></table>
+    <table id="board" class="activeField"></table>
+    <table id="enemy-board" class="noActiveField"></table>
 </div>
 <div id="chat-form">
     <ul id="chat-messages">

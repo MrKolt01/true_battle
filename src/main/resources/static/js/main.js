@@ -1,5 +1,6 @@
 var stompClient = null;
 var gameReady = "NOTREADY";
+var playerReady = "NOTREADY";
 
 function setConnected(connected) {
     if (connected) {
@@ -15,6 +16,7 @@ function connect() {
     stompClient.connect({}, function () {
         setConnected(true);
         stompClient.subscribe("/topic/game", onStartGameReceived);
+        stompClient.subscribe("/topic/ready", onPlayerReady);
         stompClient.subscribe("/topic/shot", onShotReceived);
         stompClient.subscribe("/topic/chat", onMessageReceived);
         stompClient.subscribe("/topic/players", onPlayerReceived);
@@ -44,9 +46,20 @@ function onPlayerReceived(player) {
     // alert('Player '+newPlayer.name + ' connected!');
 }
 
+function onPlayerReady(player) {
+    var player = JSON.parse(player.body);
+    if (player.name === $("#name").val()){
+        playerReady = "READY";
+    }
+}
+
 function onStartGameReceived(startGameMessage) {
     var startGameMessage = JSON.parse(startGameMessage.body);
     gameReady = startGameMessage.status;
+    if (gameReady === "READY"){
+        jQuery("#board").toggleClass('noActiveField');
+        jQuery("#enemy-board").toggleClass('activeField');
+    }
 }
 
 function onMessageReceived(message) {
@@ -135,7 +148,8 @@ $(function () {
     });
 
     $("#board td").click(function () {
-        if (gameReady !== "READY") {
+
+        if (playerReady !== "READY") {
             var minX = 0, minY = 0;
             var x = parseInt($(this).index()) - 1;
             var y = parseInt($(this).parent().index() - 1);
@@ -144,7 +158,7 @@ $(function () {
 
             if ((x >= minX) && (y >= minY)) {
                 addShip(playerName, x, y);
-                $(this).toggleClass('active');
+                $(this).toggleClass('activeCell');
             }
         }
     });

@@ -1,6 +1,8 @@
 package re.battle.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import re.battle.controller.GameController;
@@ -8,7 +10,14 @@ import re.battle.model.*;
 
 @Service
 public class GameService {
-    private Game game = new Game();
+    private Game game;
+    private final SimpMessageSendingOperations sendingOperations;
+
+    @Autowired
+    public GameService(SimpMessageSendingOperations sendingOperations) {
+        this.game = new Game();
+        this.sendingOperations = sendingOperations;
+    }
 
     public Player addPlayer(String playerName){
         Player player = new Player();
@@ -21,7 +30,7 @@ public class GameService {
         return player;
     }
 
-    public Game addShip(AddShipMessage addShipMessage){
+    public void addShip(AddShipMessage addShipMessage){
 
         Player player = game.getPlayers().get(0);
 
@@ -30,19 +39,29 @@ public class GameService {
         int y = addShipMessage.getY();
         String status = addShipMessage.getStatus();
 
+        Player player0 = game.getPlayers().get(0);
+        Player player1 = game.getPlayers().get(1);
+
         if(player.getName().equals(playerName)){
-            player = game.getPlayers().get(0);
-            System.out.println("added 0");
+            player = player0;
         } else {
-            player = game.getPlayers().get(1);
-            System.out.println("added 1");
+            player = player1;
         }
-        Cell shipPosition = new Cell(x,y,status);
-//        if(!player.isFull()) {
-//        }
-        Ship ship = new Ship(shipPosition);
-        player.getShips().add(ship);
-        return game;
+        if(!player.isFull()) {
+            Cell shipPosition = new Cell(x, y, status);
+            Ship ship = new Ship(shipPosition);
+            player.getShips().add(ship);
+        }
+
+        if(player0.isFull() && (player1.isFull())) {
+            sendingOperations.convertAndSend("/topic/game", StartGameMessage.builder()
+                    .status("READY")
+                    .build());
+        } else if(player.isFull()){
+            sendingOperations.convertAndSend("/topic/ready", ReadyPlayerMessage.builder()
+                    .name(player.getName())
+                    .build());
+        }
     }
 
     public DoShotMessage doShot(DoShotMessage doShotMessage){

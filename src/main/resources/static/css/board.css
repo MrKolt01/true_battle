@@ -20,7 +20,7 @@ table {
     border-spacing: 0;
 }
 
-.active {
+.activeCell {
     background-color: #7AFF69;
 }
 
@@ -51,3 +51,12 @@ table {
 .div .table{
     margin: 10px;
 }
+
+.noActiveField{
+    background-color: #828282;
+}
+
+.activeField{
+    background-color: #ffffff;
+}
+

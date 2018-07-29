@@ -15,10 +15,11 @@ public class Player {
     private boolean readyStatus;
 
     public Player(){
-        ships = new ArrayList<>(10);
+        ships = new ArrayList<>(maxShipsAmount);
     }
 
     public boolean isFull(){
+        System.out.println(ships.size());
         return ships.size() == maxShipsAmount;
     }
 
