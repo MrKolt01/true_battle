@@ -19,7 +19,6 @@ public class Player {
     }
 
     public boolean isFull(){
-        System.out.println(ships.size());
         return ships.size() == maxShipsAmount;
     }
 
