@@ -1,4 +1,16 @@
 
+body {
+    background: #EDEDED url("../images/arches_@2X.png");
+}
+
+#page {
+    margin: 50px 100px;
+}
+
+#main{
+    opacity: 0.5;
+}
+
 #board{
 
 }
@@ -8,7 +20,8 @@
 }
 
 #enemy-board, #board {
-    padding: 0;
+    background: #62B5ED;
+    display: inline-table;
     margin: 10px;
     border: 2px solid #181818;
 }
@@ -44,6 +57,10 @@ table {
     background-color: red;
 }
 
+#sidebar{
+    display: inline-block;
+}
+
 #name-form{
 
 }
@@ -51,15 +68,19 @@ table {
 #chat-form{
 }
 
+#chat-messages{
+    height: 300px;
+}
+
 .div .table{
     margin: 10px;
 }
 
-.noActiveField{
-    background-color: #828282;
+#main .noActiveField{
+    background: #828282;
 }
 
-.activeField{
-    background-color: #ffffff;
+#main .activeField{
+    background: #62B5ED;
 }
 
