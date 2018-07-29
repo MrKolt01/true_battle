@@ -60,11 +60,8 @@ public class GameService {
         } else {
             enemy = player0;
         }
-        System.out.println(enemy.getName()+"hello");
 
         for(Ship enemyShip : enemy.getShips()){
-            System.out.println(enemyShip.getPosition().getX()+" ");
-            System.out.print(target.getX());
             if ((enemyShip.getPosition().getX() == target.getX())
                     && (enemyShip.getPosition().getY() == target.getY())){
                 target.setStatus("DESTROYED");
