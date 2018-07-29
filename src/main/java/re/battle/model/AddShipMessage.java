@@ -11,5 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AddShipMessage {
     private String playerName;
-    private Cell shipPosition;
+//    private Cell shipPosition;
+    private int x;
+    private int y;
+    private String status;
 }

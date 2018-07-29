@@ -15,15 +15,12 @@ public class GameController {
 
     @MessageMapping("/game/add/ships")
     public void addShip(AddShipMessage addShipsMessage) {
-        System.out.println("SHHHHHHHHHHHHIIIPPPPPPPPPPPPPPPPPP");
-        //gameService.addShip(addShipsMessage.getPlayerName(), addShipsMessage.getShipPosition());
+        gameService.addShip(addShipsMessage);
     }
 
     @MessageMapping("/game/shot")
     @SendTo("/topic/shot")
     public DoShotMessage doShot(DoShotMessage doShotMessage) {
-        System.out.println(doShotMessage.getTarget().getX()+" "+doShotMessage.getTarget().getY());
-
         gameService.doShot(doShotMessage);
         return doShotMessage;
     }

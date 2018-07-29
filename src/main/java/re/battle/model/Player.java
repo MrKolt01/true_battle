@@ -3,6 +3,7 @@ package re.battle.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,12 +14,12 @@ public class Player {
     private int maxShipsAmount;
     private boolean readyStatus;
 
+    public Player(){
+        ships = new ArrayList<>(10);
+    }
+
     public boolean isFull(){
-        if(ships.size() == maxShipsAmount){
-            return true;
-        } else {
-            return false;
-        }
+        return ships.size() == maxShipsAmount;
     }
 
     public boolean getReadyStatus() {

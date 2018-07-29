@@ -10,7 +10,17 @@ public class Cell {
     private int y;
     private String status;
 
-//    public enum Status {
+    public Cell(int x, int y, String status) {
+        this.x = x;
+        this.y = y;
+        this.status = status;
+    }
+
+    public Cell(){
+
+    }
+
+    //    public enum Status {
 //        DESTROYED, MISSED, PENDING, RESERVED
 //    }
 }

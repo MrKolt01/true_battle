@@ -1,5 +1,4 @@
 var stompClient = null;
-var game = null;
 var gameReady = "NOTREADY";
 
 function setConnected(connected) {
@@ -63,15 +62,14 @@ function onShotReceived(doShotMessage) {
     targetX = receivedShot.target.x;
     targetY = receivedShot.target.y;
     shotStatus = receivedShot.target.status;
-
+    var cell;
     if ($("#name").val() === shootingPlayer) {
-        var cell = $("#enemy-board").children("tr").eq(targetY+1).children("td").eq(targetX+1);
+        cell = $("#enemy-board").children("tr").eq(targetY+1).children("td").eq(targetX+1);
     } else {
-        var cell = $("#board").children("tr").eq(targetY+1).children("td").eq(targetX+1);
+        cell = $("#board").children("tr").eq(targetY+1).children("td").eq(targetX+1);
     }
     if (shotStatus === "DESTROYED"){
         cell.toggleClass('destroyed');
-        alert("destroyed")
     } else {
         cell.toggleClass('missed');
     }
@@ -93,11 +91,13 @@ function doShot(playerName, target){
     stompClient.send("/battle/game/shot", {}, JSON.stringify(doShotMessage));
 }
 
-function addShip(playerName, target){
-    if (gameReady != "READY") {
+function addShip(playerName, x, y, status){
+    if (gameReady !== "READY") {
         var addShipMessage = {
             playerName: playerName,
-            target: target
+            x: x,
+            y: y,
+            status: "PENDING"
         };
         stompClient.send("/battle/game/add/ships", {}, JSON.stringify(addShipMessage));
     }
@@ -135,32 +135,22 @@ $(function () {
     });
 
     $("#board td").click(function () {
-        if (gameReady != "READY") {
+        if (gameReady !== "READY") {
             var minX = 0, minY = 0;
             var x = parseInt($(this).index()) - 1;
             var y = parseInt($(this).parent().index() - 1);
-            var cell = {
-                x: x,
-                y: y,
-                status: "RESERVED"
-            };
 
             var playerName = $("#name").val();
-            var target = {
-                x: x,
-                y: y,
-                status: "PENDING"
-            };
 
             if ((x >= minX) && (y >= minY)) {
-                addShip(playerName, target);
+                addShip(playerName, x, y);
                 $(this).toggleClass('active');
             }
         }
     });
 
     $("#enemy-board td").click(function () {
-        if (gameReady == "READY") {
+        if (gameReady === "READY") {
             var minX = 0, minY = 0;
             var x = parseInt($(this).index()) - 1;
             var y = parseInt($(this).parent().index() - 1);

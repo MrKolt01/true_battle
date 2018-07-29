@@ -8,7 +8,7 @@ import re.battle.model.*;
 
 @Service
 public class GameService {
-    public Game game = new Game();
+    private Game game = new Game();
 
     public Player addPlayer(String playerName){
         Player player = new Player();
@@ -21,20 +21,27 @@ public class GameService {
         return player;
     }
 
-    public Game addShip(String playerName, Cell shipPosition){
+    public Game addShip(AddShipMessage addShipMessage){
 
         Player player = game.getPlayers().get(0);
 
-        if(player.getName() == playerName){
+        String playerName = addShipMessage.getPlayerName();
+        int x = addShipMessage.getX();
+        int y = addShipMessage.getY();
+        String status = addShipMessage.getStatus();
+
+        if(player.getName().equals(playerName)){
             player = game.getPlayers().get(0);
+            System.out.println("added 0");
         } else {
             player = game.getPlayers().get(1);
+            System.out.println("added 1");
         }
-
-        if(!player.isFull()) {
-            Ship ship = new Ship(shipPosition);
-            player.getShips().add(ship);
-        }
+        Cell shipPosition = new Cell(x,y,status);
+//        if(!player.isFull()) {
+//        }
+        Ship ship = new Ship(shipPosition);
+        player.getShips().add(ship);
         return game;
     }
 
@@ -48,23 +55,25 @@ public class GameService {
 
         Player enemy;
 
-        if(player0.getName() == playerName){
+        if(player0.getName().equals(playerName)){
             enemy = player1;
         } else {
             enemy = player0;
         }
+        System.out.println(enemy.getName()+"hello");
 
-        //Some exception
-//        for(Ship enemyShip : enemy.getShips()){
-//            if ((enemyShip.getPosition().getX() == target.getX())
-//                    && (enemyShip.getPosition().getY() == target.getY())){
-//                target.setStatus("DESTROYED");
-//                return doShotMessage;
-//            }
-//        }
+        for(Ship enemyShip : enemy.getShips()){
+            System.out.println(enemyShip.getPosition().getX()+" ");
+            System.out.print(target.getX());
+            if ((enemyShip.getPosition().getX() == target.getX())
+                    && (enemyShip.getPosition().getY() == target.getY())){
+                target.setStatus("DESTROYED");
+                return doShotMessage;
+            }
+        }
         target.setStatus("MISSED");
 
-        if(target.getStatus() != "DESTROYED"){
+        if(!target.getStatus().equals("DESTROYED")){
             target.setStatus("MISSED");
         }
         return doShotMessage;
@@ -76,18 +85,11 @@ public class GameService {
         Player player0 = game.getPlayers().get(0);
         Player player1 = game.getPlayers().get(1);
 
-        System.out.println(playerName);
-        System.out.println(player0.getName());
-        System.out.println(player1.getName());
-
         if(playerName.equals(player0.getName())){
             player0.setReadyStatus(true);
         }else if(playerName.equals(player1.getName())){
             player1.setReadyStatus(true);
         }
-
-        System.out.println(player0.getReadyStatus());
-        System.out.println(player1.getReadyStatus());
 
         if(player0.getReadyStatus() && player1.getReadyStatus()){
             startGameMessage.setStatus("READY");
